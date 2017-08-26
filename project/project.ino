@@ -1,15 +1,15 @@
 #include <ESP8266WiFi.h>
 
-#include "./lib/pins.h"
-#include "./lib/wifi.h"
-#include "./lib/html.h"
+#include "pins.h"
+#include "wifi.h"
+#include "http.h"
+#include "html.h"
+
+#include "secrets.h"
 
 #define R D5
 #define G D6
 #define B D7
- 
-const char* ssid = "<ssid>";
-const char* password = "<password>";
 
 WiFiServer server(80);
 
@@ -21,7 +21,7 @@ void setup() {
   pinMode(B, OUTPUT);
  
   // Connect to WiFi network
-  connectToWiFi(ssid, password);
+  connectToWiFi(WLAN_SSID, WLAN_PASS);
   printWifiStatus();
  
   // Start the server

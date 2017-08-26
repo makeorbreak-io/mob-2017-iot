@@ -1,4 +1,4 @@
-#include <ESP8266WiFi.h>
+#include "wifi.h"
 
 void connectToWiFi(const char* ssid, const char* password) {
   Serial.print("Connecting to wireless network ");
@@ -30,3 +30,4 @@ void printWifiStatus() {
   Serial.print(rssi);
   Serial.println(" dBm");
 }
+

@@ -1,20 +1,5 @@
-//------------------------------------------------------------------------------
-// request
-//------------------------------------------------------------------------------
-String query(String request, String variable) {
-  int begin = request.indexOf(variable + "=");
+#include "html.h"
 
-  if (begin < 0) return "";
-
-  int end = request.indexOf("&", begin);
-  if (end < 0) end = request.indexOf(" ", begin);
-
-  return request.substring(begin + 2, end);
-}
-
-//------------------------------------------------------------------------------
-// HTML
-//------------------------------------------------------------------------------
 String beginHTML() {
   String html = "\
 HTTP/1.1 200 OK\n\
@@ -73,3 +58,4 @@ String range(String name, String label, int value = 0) {
 String div(String content)  { return "<div>"  + content + "</div>"; }
 String form(String content) { return "<form>" + content + "</form>"; }
 String p(String content)    { return "<p>"    + content + "</p>"; }
+
