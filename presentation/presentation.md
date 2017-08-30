@@ -13,7 +13,8 @@ class: center, middle
   2. NodeMCU development board
   3. Single color / RGB LEDs
   4. DHT11 temperature / humidity sensor
-  5. Resistances
+  5. Tactile buttons
+  6. Resistor
 
 4. Exercises
   1. Connect to the internet
@@ -71,15 +72,116 @@ class: center, middle
 
 class: center, middle
 
+# Arduino Ecosystem
+
+---
+
+# herp
+
+note: talk about the arduino ecosystem: what it is: the microcontroller boards,
+the ide and what every program has in common
+
+---
+
+class: center, middle
+
 # Exercises
 
 ---
 
 ## Exercises &mdash; 1. Connect to the Internet
 
+We'll be using `wttr.in`, an awesome weather forecast service to test
+our connectivity
+
+### Establishing connectivity to a wireless network
+
+```c
+#include <ESP8266WiFi.h>
+
+#define WLAN_SSID "my awesome wlan name"
+#define WLAN_PASS "hunter2"
+
+void setup() {
+  Serial.begin(115200);
+  Serial.print("Connecting to wireless network ");
+  Serial.println(WLAN_SSID);
+
+  WiFi.begin(WLAN_SSID, WLAN_PASS);
+  while(WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  IPAddress ip = WiFi.localIP();
+  Serial.print("Connected! IP Address: ");
+  Serial.println(ip);
+}
+```
 ---
 
-## Exercises &mdash; 2. Toggle an LED
+### Querying wttr.in
+
+No high-level HTTP clients 😧. We'll do everything through a TCP socket 👌
+
+A simple HTTP request looks like:
+
+```http
+GET /Porto?T HTTP/1.1
+Host: wttr.in
+User-Agent: curl
+Connection: close
+```
+⚠️ Each of the lines above is terminated with CRLF characters! (`\r\n`).
+**Don't forget the blank line in the end** that marks the end of the HTTP request.
+
+Try it out! Send these lines to `wttr.in` with `nc` or `telnet`!
+
+```bash
+nc wttr.in 80
+```
+
+---
+
+```c
+void loop() {
+  // `client` is a TCP client socket which we connect to `wttr.in` in port 80
+  WiFiClient client;
+  if (!client.connect("wttr.in", 80)) {
+    Serial.println("connection failed");
+    return;
+  }
+  // send the HTTP request to the server we just connected to
+  client.print("GET /Porto?T HTTP/1.1\r\n");
+  client.print("Host: wttr.in\r\n");
+  client.print("User-Agent: curl\r\n");
+  client.print("Connection: close\r\n");
+  client.print("\r\n");
+  // wait up to 5 seconds for a response
+  unsigned long timeout = millis();
+  while (client.available() == 0) {
+    if (millis() - timeout > 5000) {
+      client.stop();
+      return;
+    }
+  }
+  // read all the lines of the reply from server and print them to Serial
+  while(client.available()){
+    String line = client.readStringUntil('\r');
+    Serial.print(line);
+  }
+  Serial.println();
+  // wait before finishing the loop (and starting the next)
+  delay(5000);
+}
+```
+---
+
+## Exercises &mdash; 2. Toggle an LED using a web interface
+
+This exercise is a bit different from exercise 1. Instead of using a client socket
+to have our microcontroller connect to an internet server, we're using a server
+socket so we can have a browser connect to our microcontroller.
 
 ---
 
