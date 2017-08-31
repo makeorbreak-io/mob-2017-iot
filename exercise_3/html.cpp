@@ -46,7 +46,7 @@ String range(String name, String label, int value = 0) {
 <div>\n\
   <label>\n\
     <span>" + label + "</span>\n\
-    <input type=\"range\" min=\"0\" max=\"255\" name=\"" + name + "\" value=\"" + value + "\" />\n\
+    <input type=\"range\" min=\"0\" max=\"1023\" name=\"" + name + "\" value=\"" + value + "\" />\n\
   </label>\n\
 </div>";
 

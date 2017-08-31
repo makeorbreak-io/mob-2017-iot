@@ -19,11 +19,11 @@ void setup() {
   pinMode(R, OUTPUT);
   pinMode(G, OUTPUT);
   pinMode(B, OUTPUT);
- 
+
   // Connect to WiFi network
   connectToWiFi(WLAN_SSID, WLAN_PASS);
   printWifiStatus();
- 
+
   // Start the server
   server.begin();
   Serial.println("\nServer started");
@@ -56,9 +56,9 @@ void loop() {
 
   Serial.println("(" + r + ", " + g + ", " + b + ")");
 
-  analogWrite(R, r.toInt()*4); // NodeMCU PWM is between 0-1023
-  analogWrite(G, g.toInt()*4); // NodeMCU PWM is between 0-1023
-  analogWrite(B, b.toInt()*4); // NodeMCU PWM is between 0-1023
+  analogWrite(R, 1023 - r.toInt()); // NodeMCU PWM is between 0-1023
+  analogWrite(G, 1023 - g.toInt()); // NodeMCU PWM is between 0-1023
+  analogWrite(B, 1023 - b.toInt()); // NodeMCU PWM is between 0-1023
 
   // print html
   client.flush();
