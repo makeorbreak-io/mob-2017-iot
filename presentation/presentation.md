@@ -8,7 +8,9 @@ class: center, middle
 
 1. Introduction
 2. Electrical Circuits
-3. Material we're using
+3. Arduino Ecosystem
+4. Setup
+5. Material we're using
   1. Breadboards
   2. NodeMCU development board
   3. Single color / RGB LEDs
@@ -16,14 +18,11 @@ class: center, middle
   5. Tactile buttons
   6. Resistor
 
-4. Exercises
+6. Exercises
   1. Connect to the internet
   2. Toggle an LED on / off
   3. Control RGB LED color with 3 sliders
   4. Read values from DHT11 sensor
-      1. Print values to serial
-      2. Print values to web page
-      3. Log values to web service
   5. Control RGB LED color with values from DHT11
 
 ---
@@ -54,7 +53,7 @@ class: center, middle
 
 ## Material &mdash; NodeMCU Development Board
 
-<img src="/images/nodemcu_pins.png" width="300" />
+.center[<img src="/images/nodemcu_pins.png" width="500" />]
 
 ---
 
@@ -63,6 +62,10 @@ class: center, middle
 ---
 
 ## Material &mdash; DHT11
+
+---
+
+## Material &mdash; Tactile Buttons
 
 ---
 
@@ -76,10 +79,156 @@ class: center, middle
 
 ---
 
-# herp
+## Arduino &mdash; Ecosystem
 
+- Open source software & hardware
+- Cross-platform: runs and builds on Win / Mac / Linux
+- Arduino Programming Language (based on Wiring, very similar to C++)
+- Arduino IDE (based on Processing)
+- Suitable for all levels of expertise
+
+.center[<img src="/images/sensor_actuator.png" width="300" />]
+
+---
+
+## Arduino &mdash; Boards
+
+- 
 note: talk about the arduino ecosystem: what it is: the microcontroller boards,
 the ide and what every program has in common
+
+### Digital IO pins
+
+Can be inputs or outputs, specified by the sketch
+
+### Analog IN pins
+
+Dedicated analog input pins take voltage and convert to integer ranging from 0-1023
+
+### Analog OUT pins
+
+Dedicated analog output pins, read voltage and convert to an integer between 0-1023
+
+---
+
+## Arduino &mdash; Sketch organization
+
+The entry point for your application will be an `.ino` file.
+
+Due to limitations with the Arduino IDE, this file must be named the same as its parent folder.
+
+Support files need to be at the same level as your `.ino` file for local `#import` statements to work.
+
+```shell
+project
+├── project.ino
+├── wifi.h
+├── wifi.cpp
+└── ...
+```
+---
+
+## Arduino &mdash; Sketch code skeleton
+
+```c
+void setup() {
+  // put your setup code here, to run once
+  //
+  // used for setting up pin modes, serial monitor,
+  // and one-time initialization functions
+
+  Serial.begin(115200);
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+  Serial.println("LED is on");
+  digitalWrite(LED, HIGH);
+  delay(500);
+
+  Serial.println("LED is off");
+  digitalWrite(LED, LOW);
+  delay(500);
+}
+```
+
+---
+
+## Arduino &mdash; Important functions
+
+### I/O
+
+```c
+// mode = INPUT | OUTPUT
+void pinMode(int pin, int mode)
+
+// returns HIGH | LOW (1 | 0)
+int digitalRead(int pin)
+
+// value should be HIGH | LOW (1 | 0)
+void digitalWrite(int pin, int value)
+
+// value should be between 0-255 or 0-1023; uses PWM (Pulse Width Modulation)
+void analogWrite(int pin, int value)
+```
+
+---
+
+## Arduino &mdash; Important functions
+
+### Timing
+
+```c
+int millis()
+
+int micros()
+
+void delay(int millis)
+
+void delayMicroseconds(int micros)
+```
+
+---
+
+class: center, middle
+
+# Setup
+
+---
+
+## Setup &mdash; Install
+
+- Install the Arduino IDE from [https://www.arduino.cc/en/Main/Software](https://www.arduino.cc/en/Main/Software)
+- Install the (CH340G) drivers for the development board
+  - Mac OS X: [https://github.com/adrianmihalko/ch340g-ch34g-ch34x-mac-os-x-driver](https://github.com/adrianmihalko/ch340g-ch34g-ch34x-mac-os-x-driver)
+  - Windows (if needed): [http://www.wch.cn/download/CH341SER_ZIP.html](http://www.wch.cn/download/CH341SER_ZIP.html)
+  - Linux (if needed): [http://www.wch.cn/download/CH341SER_LINUX_ZIP.html](http://www.wch.cn/download/CH341SER_LINUX_ZIP.html)
+- Open the Arduino IDE, and under "Preferences" > "Additional Boards Manager URLs" add [http://arduino.esp8266.com/stable/package_esp8266com_index.json](http://arduino.esp8266.com/stable/package_esp8266com_index.json)
+
+---
+
+## Setup &mdash; Connect
+
+Connect your board to your laptop with the provided USB cable, and use the following settings under Tools:
+
+<dl>
+  <dt>Board</dt>
+  <dd>NodeMCU 1.0 (ESP-12E Module)</dd>
+
+  <dt>CPU Frequency</dt>
+  <dd>80 MHz</dd>
+
+  <dt>Flash Size</dt>
+  <dd>4M (3M SPIFFS)</dd>
+
+  <dt>Upload Speed</dt>
+  <dd>115200</dd>
+
+  <dt>Port</dt>
+  <dd>Depends on your machine</dd>
+</dl>
 
 ---
 
