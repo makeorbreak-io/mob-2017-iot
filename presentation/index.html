@@ -3,6 +3,7 @@
   <head>
     <title>Title</title>
     <meta charset="utf-8">
+
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
       @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
@@ -40,13 +41,14 @@
     </style>
   </head>
   <body>
-    <textarea id="source">
-    </textarea>
-    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.5.0/bluebird.min.js"></script>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+    <script src="index.js"></script>
+
     <script>
-      var slideshow = remark.create({
-        sourceUrl: 'presentation.md'
+      getChapters()
+      .then(function(source) {
+        remark.create({ source: source });
       });
     </script>
   </body>

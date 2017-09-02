@@ -1,0 +1,41 @@
+
+class: center, middle
+
+# Setup
+
+---
+
+## Setup &mdash; Install
+
+- Install the Arduino IDE from [https://www.arduino.cc/en/Main/Software](https://www.arduino.cc/en/Main/Software)
+- Install the (CH340G) drivers for the development board
+  - Mac OS X: [https://github.com/adrianmihalko/ch340g-ch34g-ch34x-mac-os-x-driver](https://github.com/adrianmihalko/ch340g-ch34g-ch34x-mac-os-x-driver)
+  - Windows (if needed): [http://www.wch.cn/download/CH341SER_ZIP.html](http://www.wch.cn/download/CH341SER_ZIP.html)
+  - Linux (if needed): [http://www.wch.cn/download/CH341SER_LINUX_ZIP.html](http://www.wch.cn/download/CH341SER_LINUX_ZIP.html)
+- Open the Arduino IDE, and under "Preferences" > "Additional Boards Manager URLs" add [http://arduino.esp8266.com/stable/package_esp8266com_index.json](http://arduino.esp8266.com/stable/package_esp8266com_index.json)
+
+---
+
+## Setup &mdash; Connect
+
+Connect your board to your laptop with the provided USB cable, and use the following settings under Tools:
+
+<dl>
+  <dt>Board</dt>
+  <dd>NodeMCU 1.0 (ESP-12E Module)</dd>
+
+  <dt>CPU Frequency</dt>
+  <dd>80 MHz</dd>
+
+  <dt>Flash Size</dt>
+  <dd>4M (3M SPIFFS)</dd>
+
+  <dt>Upload Speed</dt>
+  <dd>115200</dd>
+
+  <dt>Port</dt>
+  <dd>Depends on your machine</dd>
+</dl>
+
+---
+
