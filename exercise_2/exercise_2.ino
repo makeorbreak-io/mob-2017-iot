@@ -11,8 +11,10 @@
 WiFiServer server(80);
 
 void setup() {
+  // Initialize serial
   Serial.begin(115200);
 
+  // Initialize gpio pins
   pinMode(LED, OUTPUT);
 
   // Connect to WiFi network
@@ -23,7 +25,7 @@ void setup() {
   server.begin();
   Serial.println("\nServer started");
 
-   digitalWrite(LED, HIGH);
+  digitalWrite(LED, HIGH);
 }
 
 void loop() {
@@ -51,7 +53,7 @@ void loop() {
 
   digitalWrite(LED, isOn ? HIGH : LOW);
 
-  // print html
+  // Send HTTP reply to the client
   client.flush();
   client.println(beginHTML());
   client.println("<form>");
