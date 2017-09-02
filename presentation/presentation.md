@@ -59,6 +59,12 @@ class: center, middle
 
 ## Material &mdash; LEDs
 
+### LED
+<img src="/images/led.png" />
+
+### RGB LED
+<img src="/images/rgb_led.png" />
+
 ---
 
 ## Material &mdash; DHT11
@@ -81,13 +87,15 @@ class: center, middle
 
 ## Arduino &mdash; Ecosystem
 
+### Arduino Foundation
 - Open source software & hardware
 - Cross-platform: runs and builds on Win / Mac / Linux
 - Arduino Programming Language (based on Wiring, very similar to C++)
 - Arduino IDE (based on Processing)
 - Suitable for all levels of expertise
 
-.center[<img src="/images/sensor_actuator.png" width="300" />]
+### Other Software
+- [Fritzing](http://fritzing.org/home/) (circuit design)
 
 ---
 
