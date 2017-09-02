@@ -58,8 +58,7 @@ void loop() {
     return;
   }
 
-  // Wait until the client sends the request data
-  // Discards it
+  // Read (and discard) the client request data
   while (!client.available()) {
     client.read();
   }
