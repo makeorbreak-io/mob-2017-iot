@@ -45,32 +45,36 @@ void loop() {
   String request = client.readStringUntil('\r');
 
   // ignore browser requests for favicon.ico
-  if (request.indexOf("favicon.ico") >= 0) return;
+  if (request.indexOf("favicon.ico") >= 0) {
+    return;
+  }
 
   Serial.println();
   Serial.println(request);
 
+  // Read the R, G and B values from the query string
   String r = query(request, "r");
   String g = query(request, "g");
   String b = query(request, "b");
 
   Serial.println("(" + r + ", " + g + ", " + b + ")");
 
-  analogWrite(R, 1023 - r.toInt()); // NodeMCU PWM is between 0-1023
-  analogWrite(G, 1023 - g.toInt()); // NodeMCU PWM is between 0-1023
-  analogWrite(B, 1023 - b.toInt()); // NodeMCU PWM is between 0-1023
+  // NodeMCU PWM is between 0-1023
+  analogWrite(R, 1023 - r.toInt());
+  analogWrite(G, 1023 - g.toInt());
+  analogWrite(B, 1023 - b.toInt());
 
-  // print html
-  client.flush();
-
+  // Send HTTP response
+  client.println("HTTP/1.1 200 OK");
+  client.println("Content-Type: text/html");
+  client.println();
   client.println(beginHTML());
-
   client.println("<form>");
   client.println(range("r", "R", r.toInt()));
   client.println(range("g", "G", g.toInt()));
   client.println(range("b", "B", b.toInt()));
   client.println(submit("Set LED Color"));
   client.println("</form>");
-
   client.println(endHTML());
+
 }

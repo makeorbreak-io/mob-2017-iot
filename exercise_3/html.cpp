@@ -2,9 +2,6 @@
 
 String beginHTML() {
   String html = "\
-HTTP/1.1 200 OK\n\
-Content-Type: text/html\n\
-\n\
 <!DOCTYPE HTML>\n\
 <html>\n\
   <body>\n\
@@ -52,10 +49,3 @@ String range(String name, String label, int value = 0) {
 
   return html;
 }
-
-//
-// HTML elements
-String div(String content)  { return "<div>"  + content + "</div>"; }
-String form(String content) { return "<form>" + content + "</form>"; }
-String p(String content)    { return "<p>"    + content + "</p>"; }
-
