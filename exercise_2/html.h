@@ -3,13 +3,10 @@
 
 #include <Arduino.h>
 
-String query(String request, String variable);
 String beginHTML();
 String endHTML();
+String input(String type, String name, String value);
 String submit(String label);
-String div(String content);
-String form(String content);
-String p(String content);
 
 #endif
 

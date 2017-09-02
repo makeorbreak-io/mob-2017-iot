@@ -24,7 +24,6 @@ void setup() {
   // Start the server
   server.begin();
   Serial.println("\nServer started");
-
   digitalWrite(LED, HIGH);
 }
 
@@ -57,7 +56,7 @@ void loop() {
   client.flush();
   client.println(beginHTML());
   client.println("<form>");
-  client.println(String("<input type='hidden' name='led' value='") + String(isOn ? "OFF" : "ON") + String("' >"));
+  client.println(input("hidden", "led", isOn ? "OFF" : "ON"));
   client.println(submit(isOn ? "Turn Off" : "Turn On"));
   client.println("</form>");
   client.println(endHTML());

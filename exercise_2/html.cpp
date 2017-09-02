@@ -24,8 +24,10 @@ String endHTML() {
 
 //
 // Form inputs
-
 String submit(String label) {
   return "<button type=\"submit\">" + label + "</button>";
 }
 
+String input(String type, String name, String value) {
+  return "<input type=\"" + type + "\" name=\"" + name + "\" value=\"" + value + "\" />";
+}
