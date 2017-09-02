@@ -42,6 +42,13 @@ The NodeMCU devkit is an Arduino-compatible IoT platform based on the ESP8266 So
 
 ## Material &mdash; DHT11
 
+<img src="/images/dht11_sensor.jpg" width="300" />
+
+The DHT11 is a basic, ultra low-cost digital temperature and humidity sensor.
+It uses a capacitive humidity sensor and a thermistor to measure the surrounding
+air, and spits out a digital signal on the data pin (no analog input pins needed).
+
+
 ---
 
 ## Material &mdash; Tactile Buttons

@@ -143,12 +143,30 @@ void setup() {
 void loop() {
   // Wait until a client connects to our server
   WiFiClient client = server.available();
-  if (!client) return;
+  if (!client) {
+    return;
+  }
 
   // Wait until the connected client sends the request data
   while (!client.available()) {
     delay(1);
   }
+
+  // Get the first line of the HTTP request
+  String request = client.readStringUntil('\r');
+
+  // Ignore browser requests for favicon.ico
+  if (request.indexOf("favicon.ico") >= 0) {
+    return;
+  }
+
+  ...
+```
+
+---
+
+```c
+  ...
 
   // Parse the query string in the GET line
   // GET /?led=ON
@@ -157,7 +175,6 @@ void loop() {
 
   // Turn LED on or off
   digitalWrite(LED, isOn ? HIGH : LOW);
-
 
   // Send HTTP reply to the client
   client.println("HTTP/1.1 200 OK");
@@ -170,6 +187,7 @@ void loop() {
   client.println("</form>");
   client.println(endHTML());
 }
+
 ```
 
 ---
@@ -188,20 +206,112 @@ following diagram.
 
 ---
 
-## Exercises &mdash; 4. Read values from DHT11
+```c
+#define R D5
+#define G D6
+#define B D7
 
-<img src="/images/dht11_sensor.jpg" width="300" />
+WiFiServer server(80);
 
-The DHT11 is a basic, ultra low-cost digital temperature and humidity sensor.
-It uses a capacitive humidity sensor and a thermistor to measure the surrounding
-air, and spits out a digital signal on the data pin (no analog input pins needed).
+void setup() {
+  Serial.begin(115200);
+
+  pinMode(R, OUTPUT);
+  pinMode(G, OUTPUT);
+  pinMode(B, OUTPUT);
+
+  // Connect to WiFi network
+  connectToWiFi(WLAN_SSID, WLAN_PASS);
+  printWifiStatus();
+
+  // Start the server
+  server.begin();
+  Serial.println("\nServer started");
+}
+
+```
 
 ---
 
-### DHT11 &mdash; 4.1. Print values to serial monitor
+```c
+void loop() {
+  WiFiClient client = server.available();
+
+  if (!client) {
+    return;
+  }
+
+  // Wait until de client sends some data
+  while(!client.available()) {
+    delay(1);
+  }
+
+  // process request
+  String request = client.readStringUntil('\r');
+
+  // ignore browser requests for favicon.ico
+  if (request.indexOf("favicon.ico") >= 0) {
+    return;
+  }
+
+  ...
+```
+
+---
 
 ```c
-DHT sensor(5, DHT11); // DHT11 connected to GPIO 5
+  ...
+
+  // Read the R, G and B values from the query string
+  String r = query(request, "r");
+  String g = query(request, "g");
+  String b = query(request, "b");
+
+  Serial.println("(" + r + ", " + g + ", " + b + ")");
+
+  // For commomn anode type RGB LEDS, lower values mean a brighter ligh:
+  analogWrite(R, 1023 - r.toInt());
+  analogWrite(G, 1023 - g.toInt());
+  analogWrite(B, 1023 - b.toInt());
+
+  // Send HTTP response
+  client.println("HTTP/1.1 200 OK");
+  client.println("Content-Type: text/html");
+  client.println();
+  client.println(beginHTML());
+  client.println("<form>");
+  client.println(range("r", "R", r.toInt()));
+  client.println(range("g", "G", g.toInt()));
+  client.println(range("b", "B", b.toInt()));
+  client.println(submit("Set LED Color"));
+  client.println("</form>");
+  client.println(endHTML());
+
+}
+```
+
+---
+
+## Exercises &mdash; 4. Use an IoT API to log values from a DHT11 sensor
+
+
+We'll be using the *ThingSpeak* API to log the values read from the sensor.
+ThingSpeak is an API that enables the creation of sensor logging applications
+and sharing of data.
+
+<div style="text-align: center;">
+  <img src="images/exercise_4.png" width="300" />
+</div>
+
+Visit [thingspeak.com](https://thingspeak.com) and create an account if you haven't yet. Create a channel
+with two fields and take note of the channel's API **write** key.
+
+---
+
+### Basic DHT11 usage: log values to the Serial console
+
+```c
+DHT sensor(D1, DHT11); // DHT11 connected to GPIO 5
 float hum = 0, temp = 0;
 
 void setup() {
@@ -221,23 +331,9 @@ void loop() {
   delay(20000); // !!!
 }
 ```
----
-
-### DHT11 &mdash; 4.2. Print values to web page
 
 ---
-
-### DHT11 &mdash; 4.3. Log values to web service
-
-We'll be using the *ThingSpeak* API to log the values read from the sensor.
-ThingSpeak is an API that enables the creation of sensor logging applications
-and sharing of data.
-
-<div style="text-align: center;">
-<img src="/images/thingspeak.png" width="600" />
-</div>
----
-
+### Send values to the thingspeak API
 ```c
 #define HTTP_HOST "api.thingspeak.com"
 #define HTTP_PORT 80
@@ -274,5 +370,110 @@ void loop() {
 ```
 ---
 
+class: center, middle
+
+<img src="/images/thingspeak.png" width="600" />
+
+---
+
+## Exercises &mdash; 5. Use physical buttons to increment and decrement a counter
+
+We are going to use two physical buttons to increment a counter and display it
+on a web page. In a sense, this is the opposite of exercise 2, where we used a
+virtual object to control a physical object.
+
+<div style="text-align: center;">
+  <img src="images/exercise_5.png" width="300" />
+</div>
+
+In this exercise, we're going to use a physical object to control a virtual
+object.
+
+---
+
+@TODO explain here how a physical switch works
+---
+
+```c
+WiFiServer server(80);
+byte b1 = LOW;
+byte b1_prev = LOW;
+byte b2 = LOW;
+byte b2_prev = LOW;
+int counter = 0;
+
+void setup() {
+  // Initialize serial
+  Serial.begin(115200);
+
+  // Initialize gpio pins
+  pinMode(D1, INPUT);
+  pinMode(D2, INPUT);
+
+  // Connect to WiFi network
+  connectToWiFi(WLAN_SSID, WLAN_PASS);
+  printWifiStatus();
+
+  // Start the TCP server
+  server.begin();
+  Serial.println("\nServer started");
+}
 
 
+```
+
+---
+
+```c
+void loop() {
+
+  // Read value from gpio pins
+  b1 = digitalRead(D1);
+  b2 = digitalRead(D2);
+
+  // Check which pins go from HIGH to LOW or LOW to HIGH
+  if (b1_prev == LOW && b1 == HIGH) {
+    counter--;
+    Serial.println(counter);
+    b1_prev = HIGH;
+  } else if (b1_prev == HIGH && b1 == LOW) {
+    b1_prev = LOW;
+  }
+
+  if (b2_prev == LOW && b2 == HIGH) {
+    counter++;
+    Serial.println(counter);
+    b2_prev = HIGH;
+  } else if (b2_prev == HIGH && b2 == LOW) {
+    b2_prev = LOW;
+  }
+
+  ...
+```
+
+---
+
+```c
+  ...
+
+  // Check if there are clients connect to our TCP server
+  WiFiClient client = server.available();
+  if (!client) {
+    return;
+  }
+
+  // Read (and discard) the client request data
+  while (!client.available()) {
+    client.read();
+  }
+
+  // Send HTTP reply to the client
+  client.flush();
+  client.println(beginHTML());
+  client.print("<h1>");
+  client.print(counter);
+  client.println("</h1>");
+  client.println(endHTML());
+
+}
+```
