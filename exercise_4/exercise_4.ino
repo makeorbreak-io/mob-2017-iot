@@ -1,12 +1,13 @@
 #include <DHT.h>
 
+#include "pins.h"
 #include "wifi.h"
 #include "secrets.h"
 
 #define HTTP_HOST "api.thingspeak.com"
 #define HTTP_PORT 80
 
-DHT sensor(5, DHT11);
+DHT sensor(D1, DHT11);
 float hum = 0, temp = 0;
 
 void setup() {
