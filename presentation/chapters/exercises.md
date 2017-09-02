@@ -6,8 +6,8 @@ class: center, middle
 
 ## Exercises &mdash; 1. Connect to the Internet
 
-We'll be using `wttr.in`, an awesome weather forecast service to test
-our connectivity
+Our first exercise won't have a physical circuit. We'll be using `wttr.in`,
+an awesome weather forecast service to test our connectivity to the internet.
 
 ### Establishing connectivity to a wireless network
 
@@ -90,17 +90,101 @@ void loop() {
   delay(5000);
 }
 ```
+
 ---
 
 ## Exercises &mdash; 2. Toggle an LED using a web interface
 
 This exercise is a bit different from exercise 1. Instead of using a client socket
 to have our microcontroller connect to an internet server, we're using a server
-socket so we can have a browser connect to our microcontroller.
+socket so we can have a browser connect to our microcontroller that will act as
+an HTTP server.
+
+We'll also set up a small physical circuit using a resistor and an led.
+
+<div style="text-align: center;">
+  <img src="/images/exercise_2.png" width="300" />
+</div>
 
 ---
 
-## Exercises &mdash; 3. RGB LED
+We'll be using a few functions to reduce the size of the code samples
+in this presentation: `connectToWifi`, `printWifiStatus`, `beginHTML` `query`.
+
+```c
+// A TCP server listening on port 80 using the wifi hardware
+WiFiServer server(80);
+
+void setup() {
+  // Initialize serial I/O
+  Serial.begin(115200);
+
+  // Initialize GPIO pins
+  pinMode(D6, OUTPUT);
+
+  // Connect to WiFi network
+  connectToWiFi(WLAN_SSID, WLAN_PASS);
+  printWifiStatus();
+
+  // Start the server
+  server.begin();
+  Serial.println("\nServer started");
+
+  // Get the first line of the HTTP request
+  String request = client.readStringUntil('\r');
+
+  // Ignore browser requests for favicon.ico
+  if (request.indexOf("favicon.ico") >= 0) return;
+}
+```
+---
+
+```c
+void loop() {
+  // Wait until a client connects to our server
+  WiFiClient client = server.available();
+  if (!client) return;
+
+  // Wait until the connected client sends the request data
+  while (!client.available()) {
+    delay(1);
+  }
+
+  // Parse the query string in the GET line
+  // GET /?led=ON
+  String led = query(request, "led");
+  bool isOn = led.indexOf("ON") > -1;
+
+  // Turn LED on or off
+  digitalWrite(LED, isOn ? HIGH : LOW);
+
+
+  // Send HTTP reply to the client
+  client.println("HTTP/1.1 200 OK");
+  client.println("Content-Type: text/html");
+  client.println();
+  client.println(beginHTML());
+  client.println("<form>");
+  client.println(input("hidden", "led", isOn ? "OFF" : "ON"));
+  client.println(submit(isOn ? "Turn Off" : "Turn On"));
+  client.println("</form>");
+  client.println(endHTML());
+}
+```
+
+---
+
+## Exercises &mdash; 3. Control an RGB LED's hue and brightness using a web interface
+
+This exercise is very similar to the previous, with some more added complexity
+in the code and in the circuit.
+
+The RGB led we're providing is the "common anode" type, so we wire it like the
+following diagram.
+
+<div style="text-align: center;">
+  <img src="/images/exercise_3.png" width="300" />
+</div>
 
 ---
 
