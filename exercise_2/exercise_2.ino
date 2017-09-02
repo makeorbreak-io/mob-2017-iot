@@ -24,36 +24,42 @@ void setup() {
   // Start the server
   server.begin();
   Serial.println("\nServer started");
-  digitalWrite(LED, HIGH);
 }
 
 void loop() {
+  // Wait until a client connects to our server
   WiFiClient client = server.available();
   if (!client) {
     return;
   }
 
-  // Wait until de client sends some data
-  while(!client.available()) {
+  // Wait until the connected client sends the request data
+  while (!client.available()) {
     delay(1);
   }
 
-  // process request
+  // Get the first line of the HTTP request
   String request = client.readStringUntil('\r');
 
-  // ignore browser requests for favicon.ico
-  if (request.indexOf("favicon.ico") >= 0) return;
+  // Ignore browser requests for favicon.ico
+  if (request.indexOf("favicon.ico") >= 0) {
+    return;
+  }
 
   Serial.println();
   Serial.println(request);
 
+  // Parse the query string in the GET line
+  // GET /?led=ON
   String led = query(request, "led");
   bool isOn = led.indexOf("ON") > -1;
 
   digitalWrite(LED, isOn ? HIGH : LOW);
 
   // Send HTTP reply to the client
-  client.flush();
+  client.println("HTTP/1.1 200 OK");
+  client.println("Content-Type: text/html");
+  client.println();
   client.println(beginHTML());
   client.println("<form>");
   client.println(input("hidden", "led", isOn ? "OFF" : "ON"));
