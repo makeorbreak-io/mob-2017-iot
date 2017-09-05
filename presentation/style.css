@@ -2,7 +2,9 @@
   box-sizing: border-box
 }
 
-body { font-family: 'Droid Serif'; }
+body {
+  font-family: 'Droid Serif';
+}
 
 h1, h2, h3 {
   margin: 0;
@@ -10,21 +12,85 @@ h1, h2, h3 {
   font-weight: normal;
 }
 
-h2 { margin-bottom: 50px }
-
-ul li {
-  margin-top: 15px
+h2 {
+  margin-bottom: 50px;
 }
 
-dl { margin-top: 30px }
+ul li {
+  margin-top: 15px;
+}
+
+dl {
+  margin-top: 30px;
+}
+
 dl dt, dl dd {
   display: block;
   float: left;
   margin: 0 0 10px;
 }
 
-dl dt { width: 30%; clear: left; font-weight: bold; text-align: right; padding-right: 30px }
-dl dd { width: 70%; }
+dl dt {
+  width: 30%;
+  clear: left;
+  font-weight: bold;
+  text-align: right;
+  padding-right: 30px;
+}
 
-.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; font-size: 16px; }
+dl dd {
+  width: 70%;
+}
 
+.remark-code, .remark-inline-code {
+  font-family: 'Ubuntu Mono';
+  font-size: 16px;
+}
+
+.inverted {
+  color: white;
+  background-color: black;
+}
+
+.centered {
+  display: block;
+  text-align: center;
+}
+
+.font-xl {
+  font-size: 140%;
+}
+
+.font-l {
+  font-size: 120%;
+}
+
+.font-s {
+  font-size: 80%;
+}
+
+.font-xs {
+  font-size: 60%;
+}
+
+.margin-top {
+  display: none;
+  margin-top: 1em;
+}
+
+blockquote {
+  background: #f9f9f9;
+  border-left: 10px solid #ccc;
+  margin: 1.5em 10px;
+  padding: 0.5em 10px;
+  quotes: "\201C""\201D""\2018""\2019";
+}
+
+blockquote:before {
+  color: #ccc;
+  content: open-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
