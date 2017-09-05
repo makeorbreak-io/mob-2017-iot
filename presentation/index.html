@@ -13,15 +13,7 @@
     <link rel="stylesheet" type="text/css" href="/style.css" />
   </head>
   <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.5.0/bluebird.min.js"></script>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
     <script src="index.js"></script>
-
-    <script>
-      getChapters()
-      .then(function(source) {
-        remark.create({ source: source });
-      });
-    </script>
   </body>
 </html>
