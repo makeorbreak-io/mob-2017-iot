@@ -81,6 +81,10 @@ dl dd {
   font-size: 50%;
 }
 
+.font-xxs {
+  font-size: 25%;
+}
+
 .margin-top {
   display: block;
   margin-top: 2em;
@@ -107,10 +111,22 @@ blockquote:before {
   vertical-align: -0.4em;
 }
 
-a:visited, a:active {
+a, :visited, a:active {
   color: black;
 }
 
-.inverted a:visited, .inverted a:active {
+.inverted a, .inverted a:visited, .inverted a:active {
   color: white;
 }
+
+.container {
+  margin-top: 3em;
+}
+
+.container > div {
+  width: 50%;
+  float: left;
+}
+
+.container > div
+
