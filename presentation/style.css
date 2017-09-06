@@ -57,8 +57,12 @@ dl dd {
   text-align: center;
 }
 
+.font-xxl {
+  font-size: 200%;
+}
+
 .font-xl {
-  font-size: 140%;
+  font-size: 160%;
 }
 
 .font-l {
@@ -70,7 +74,7 @@ dl dd {
 }
 
 .font-xs {
-  font-size: 60%;
+  font-size: 50%;
 }
 
 .margin-top {
@@ -97,4 +101,12 @@ blockquote:before {
   line-height: 0.1em;
   margin-right: 0.25em;
   vertical-align: -0.4em;
+}
+
+a:visited, a:active {
+  color: black;
+}
+
+.inverted a:visited, .inverted a:active {
+  color: white;
 }
