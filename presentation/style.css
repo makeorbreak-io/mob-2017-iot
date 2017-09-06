@@ -74,8 +74,12 @@ dl dd {
 }
 
 .margin-top {
-  display: none;
-  margin-top: 1em;
+  display: block;
+  margin-top: 2em;
+}
+
+.color-gray {
+  color: gray;
 }
 
 blockquote {
