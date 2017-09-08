@@ -8,7 +8,7 @@
   };
 
   const source = () => {
-    const numbers = ["01", "02", "03"];
+    const numbers = ["01", "02", "03", "04"];
     return Promise.all(numbers.map(chapter))
       .then((result) => result.join("\n"));
   }
