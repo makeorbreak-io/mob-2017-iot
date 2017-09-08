@@ -128,5 +128,6 @@ a, :visited, a:active {
   float: left;
 }
 
-.container > div
-
+pre {
+  display: inline;
+}
